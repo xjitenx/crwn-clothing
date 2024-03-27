@@ -59,17 +59,14 @@ export const addCollectionAndDocuments = async (
   await batch.commit();
 };
 
-export const getCategoriesAndDocuments = async () => {
-  const collectionRef = collection(db, "categories");
+export const getCategoriesAndDocuments = async (col) => {
+  const collectionRef = collection(db, col);
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-
+  const categoryMap = querySnapshot.docs.map((docSnapshop) =>
+    docSnapshop.data()
+  );
   return categoryMap;
 };
 
